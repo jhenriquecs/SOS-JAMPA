@@ -8,7 +8,7 @@ class Config:
     Classe de configuração da aplicação.
     Define caminhos de arquivos, chaves secretas e limites de upload.
     """
-    SECRET_KEY = os.environ.get('SOS_JAMPA_SECRET', 'troque-essa-chave-por-uma-segura')
+    SECRET_KEY = os.environ.get('SOS_JAMPA_SECRET', 'best_secret_key_ever_truste_me')
     UPLOAD_FOLDER = os.path.join(BASE_DIR, 'static', 'uploads')
     DATA_FOLDER = os.path.join(BASE_DIR, 'data')
     
