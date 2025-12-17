@@ -1,13 +1,18 @@
 <div class="post-card" id="post-{{ p.id }}">
   <div class="post-header">
-    <img
-      class="avatar"
-      src="{{ url_for('static', filename=p.author_image) if p.author_image else 'https://ui-avatars.com/api/?name=' + (p.author_nick|urlencode) + '&background=random' }}"
-      alt="avatar"
-    />
+    <a href="{{ url_for('main.view_user_profile_by_nickname', nickname=p.author_nick|lower) }}" class="avatar-link" aria-label="Ver perfil de {{ p.author_nick }}">
+      <img
+        class="avatar"
+        src="{{ url_for('static', filename=p.author_image.replace('\\', '/')) if p.author_image else 'https://ui-avatars.com/api/?name=' + (p.author_nick|urlencode) + '&background=random' }}"
+        onerror="this.src='https://ui-avatars.com/api/?name={{ p.author_nick|urlencode }}&background=random'"
+        alt="avatar"
+      />
+    </a>
     <div class="post-meta">
-      <div class="nick">{{ p.author_nick }}</div>
-      <div class="time">{{ p.created_at }}</div>
+      <div class="nick">
+        <a href="{{ url_for('main.view_user_profile_by_nickname', nickname=p.author_nick|lower) }}">{{ p.author_nick }}</a>
+      </div>
+      <div class="time">{{ p.created_at.split(' ')[1] if p.created_at else '' }}</div>
     </div>
     {% if session.get('user_id') == p.author_id or session.get('is_admin') %}
     <div class="post-options">
@@ -43,7 +48,8 @@
     <a href="{{ url_for('posts.view_post', post_id=p.id) }}">
       <img
         class="post-img"
-        src="{{ url_for('static', filename=p.image_path) }}"
+        src="{{ url_for('static', filename=p.image_path.replace('\\', '/')) }}"
+        onerror="this.style.display='none'"
         alt="post image"
       />
     </a>

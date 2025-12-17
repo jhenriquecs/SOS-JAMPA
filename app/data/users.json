@@ -3,11 +3,13 @@
     "id": "ef4e0ba7-8455-49e3-b6b1-3211833ffbc3",
     "email": "jhenriques.costas@gmail.com",
     "password_hash": "scrypt:32768:8:1$BHxaaSQpa7EtFjbA$398f490df46f6cd351005fda59d2e5cb0ef5aa1ae824caead799e048bfc45b0d09516f6792c4dd270246116146a4dc34e1e4e0e9e6b8d4bd09ffbac959543b7a",
-    "nickname": "Henrique",
+    "nickname": "henrique",
     "nome": "Henrique Costa",
     "is_admin": true,
-    "profile_image": "uploads/profile_ef4e0ba7-8455-49e3-b6b1-3211833ffbc3.jpg",
-    "created_at": "2025-12-10T21:18:19.144947"
+    "is_dev": false,
+    "profile_image": "uploads/ef4e0ba7-8455-49e3-b6b1-3211833ffbc3/profile/profile_ef4e0ba7-8455-49e3-b6b1-3211833ffbc3.jpg",
+    "created_at": "2025-12-10T21:18:19.144947",
+    "cover_image": "uploads/ef4e0ba7-8455-49e3-b6b1-3211833ffbc3/cover/cover_ef4e0ba7-8455-49e3-b6b1-3211833ffbc3.jpg"
   },
   {
     "id": "25efc3a9-b5de-4b1f-9b4f-7b9d51dcb41a",

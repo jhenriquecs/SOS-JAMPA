@@ -1,4 +1,29 @@
 /**
+ * Redireciona para login via POST sem expor mensagem na URL.
+ */
+function redirectToLogin(reasonText) {
+  const loginUrl = (window.APP_ROUTES && window.APP_ROUTES.login) || "/auth/login";
+  const form = document.createElement("form");
+  form.method = "POST";
+  form.action = loginUrl;
+
+  const reason = document.createElement("input");
+  reason.type = "hidden";
+  reason.name = "reason";
+  reason.value = reasonText || "";
+  form.appendChild(reason);
+
+  const reasonOnly = document.createElement("input");
+  reasonOnly.type = "hidden";
+  reasonOnly.name = "reason_only";
+  reasonOnly.value = "1";
+  form.appendChild(reasonOnly);
+
+  document.body.appendChild(form);
+  form.submit();
+}
+
+/**
  * Gerencia o clique no botão "expandir" dos cards de resíduos.
  * Alterna a visibilidade dos detalhes do card.
  */
@@ -246,7 +271,7 @@ if (senha) {
     if (reqNum) reqNum.classList.toggle("ok", /\d/.test(valor));
 
     const reqEsp = document.getElementById("req-esp");
-    if (reqEsp) reqEsp.classList.toggle("ok", /[@$!%*?&]/.test(valor));
+    if (reqEsp) reqEsp.classList.toggle("ok", /[@$!%*?&#]/.test(valor));
   });
 }
 
@@ -297,7 +322,7 @@ function toggleLike(postId) {
   })
     .then((response) => {
       if (response.status === 401) {
-        window.location.href = "/login"; // Redireciona se não estiver logado
+        redirectToLogin("Você precisa estar logado para curtir posts.");
         return;
       }
       return response.json();
@@ -495,7 +520,7 @@ function submitComment(postId) {
   })
     .then((res) => {
       if (res.status === 401) {
-        window.location.href = "/login";
+        redirectToLogin("Você precisa estar logado para comentar.");
         return;
       }
       return res.json();

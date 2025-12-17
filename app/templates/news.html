@@ -1,0 +1,61 @@
+{% extends 'base.html' %} {% block content %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/news.css') }}"
+/>
+
+<div class="news-container">
+  <div class="news-header">
+    <h1><i class="fas fa-newspaper"></i> Notícias Ambientais</h1>
+    <p>
+      Fique por dentro das últimas novidades sobre meio ambiente e
+      sustentabilidade.
+    </p>
+  </div>
+
+  {% if error %}
+  <div class="news-error">
+    <h3><i class="fas fa-exclamation-circle"></i> Ops!</h3>
+    <p>{{ error }}</p>
+  </div>
+  {% else %}
+  <div class="news-grid">
+    {% for article in articles %}
+    <article class="news-card">
+      <div class="news-image-container">
+        <img
+          src="{{ article.image_url or 'https://picsum.photos/seed/' + loop.index|string + '/400/250' }}"
+          alt="{{ article.title }}"
+          class="news-image"
+          onerror="this.src='https://picsum.photos/seed/{{ loop.index }}/400/250'"
+        />
+      </div>
+      <div class="news-content">
+        <div class="news-source">
+          <i class="far fa-newspaper"></i> {{ article.source_id or 'Fonte
+          Desconhecida' }}
+        </div>
+        <h2 class="news-title">{{ article.title }}</h2>
+        <p class="news-description">
+          {{ article.description or 'Sem descrição disponível.' }}
+        </p>
+        <div class="news-footer">
+          <span class="news-date">
+            <i class="far fa-clock"></i> {{ article.pubDate.split(' ')[0] if
+            article.pubDate else 'Hoje' }}
+          </span>
+          <a href="{{ article.link }}" target="_blank" class="news-link"
+            >Ler mais <i class="fas fa-arrow-right"></i
+          ></a>
+        </div>
+      </div>
+    </article>
+    {% else %}
+    <div class="news-error" style="grid-column: 1/-1">
+      <p>Nenhuma notícia encontrada no momento.</p>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

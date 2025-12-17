@@ -1,1 +1,18 @@
-[]
+[
+  {
+    "id": "cf996197-8387-45c5-95fb-b23f997297df",
+    "name": "Pega pilhas",
+    "type": "pilhas",
+    "address": "pinheiro do paraná, 34 - paratibe",
+    "lat": -7.2055796,
+    "lon": -34.8344496
+  },
+  {
+    "id": "881ab093-72ec-4125-b80d-152d92d0ab07",
+    "name": "Ponto das cinco bocas",
+    "type": "metal",
+    "address": "avenida dom manoel paiva, S/N - Mandacaru",
+    "lat": -7.1090786,
+    "lon": -34.8588205
+  }
+]

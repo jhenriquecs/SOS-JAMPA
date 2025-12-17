@@ -12,7 +12,7 @@
   {
     "id": "b20e15a7-e0d1-494e-98e5-35e3cbbe13a0",
     "author_id": "ef4e0ba7-8455-49e3-b6b1-3211833ffbc3",
-    "image_path": "uploads/post/post_a08d5f12e1f84323b75fd669e1157d57_Imagem_do_WhatsApp_de_2025-11-05_as_20.08.08_3b6a5cea.jpg",
+    "image_path": "uploads/ef4e0ba7-8455-49e3-b6b1-3211833ffbc3/posts/post_a08d5f12e1f84323b75fd669e1157d57_Imagem_do_WhatsApp_de_2025-11-05_as_20.08.08_3b6a5cea.jpg",
     "description": "Teste de postagem lorem ipsum",
     "address": "pinheiro do paraná, 34",
     "created_at": "17:45:25 16/12/2025",
@@ -20,6 +20,17 @@
     "likes": [
       "ef4e0ba7-8455-49e3-b6b1-3211833ffbc3"
     ],
+    "comments_count": 1
+  },
+  {
+    "id": "570bcf6e-c937-4b60-98f3-74a564ae2fa4",
+    "author_id": "b8525371-d481-40e9-898d-3ee79e7702af",
+    "image_path": "",
+    "description": "teste de publicação",
+    "address": "",
+    "created_at": "01:58:14 17/12/2025",
+    "tags": "",
+    "likes": [],
     "comments_count": 1
   }
 ]

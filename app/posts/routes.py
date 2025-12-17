@@ -46,14 +46,14 @@ def create_post():
             fn = secure_filename(f.filename)
             newname = f"post_{uuid.uuid4().hex}_{fn}"
             
-            # Define pasta de destino: static/uploads/post
-            upload_folder = os.path.join(current_app.config['UPLOAD_FOLDER'], 'post')
+            # Pasta de destino: static/uploads/<author_id>/posts
+            upload_folder = os.path.join(current_app.config['UPLOAD_FOLDER'], session['user_id'], 'posts')
             os.makedirs(upload_folder, exist_ok=True)
             savepath = os.path.join(upload_folder, newname)
             
             f.save(savepath)
             # Use forward slash para URLs
-            imgpath = f"uploads/post/{newname}"
+            imgpath = f"uploads/{session['user_id']}/posts/{newname}"
         pid = str(uuid.uuid4())
         # Horário de Brasília (UTC-3)
         brasilia_tz = datetime.timezone(datetime.timedelta(hours=-3))

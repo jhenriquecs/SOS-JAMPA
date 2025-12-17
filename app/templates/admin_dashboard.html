@@ -133,7 +133,9 @@
             <td>
               {{ user.nome }} <br />
               <small>@{{ user.nickname }}</small>
-              {% if user.is_admin %}
+              {% if user.is_dev %}
+              <span class="dev-badge">DEV</span>
+              {% endif %} {% if user.is_admin %}
               <span class="admin-badge">ADMIN</span>
               {% endif %}
             </td>
@@ -191,9 +193,28 @@
                   >
                     Banir
                   </button>
+                  {% else %} {% if user.is_dev %}
+                  <span
+                    class="admin-label"
+                    style="color: #ff4444; font-weight: bold"
+                    >(Dev)</span
+                  >
                   {% else %}
                   <span class="admin-label">(Admin)</span>
-                  {% endif %}
+                  {% endif %} {% if session.is_dev and not user.is_dev %}
+                  <form
+                    action="{{ url_for('admin.demote_user') }}"
+                    method="post"
+                    onsubmit="return confirm('Tem certeza que deseja remover os privilégios de ADMIN deste usuário?');"
+                    class="inline-form"
+                    style="display: inline-block; margin-left: 5px"
+                  >
+                    <input type="hidden" name="user_id" value="{{ user.id }}" />
+                    <button type="submit" class="btn-small btn-danger">
+                      Remover Admin
+                    </button>
+                  </form>
+                  {% endif %} {% endif %}
                 </div>
               </div>
             </td>
@@ -214,7 +235,7 @@
           <tr>
             <th>Email</th>
             <th>Motivo</th>
-            <th>Data</th>
+            <th>Hora / Data</th>
             <th>Ações</th>
           </tr>
         </thead>
@@ -231,7 +252,9 @@
                 onsubmit="return confirm('Tem certeza que deseja desbanir este usuário?');"
               >
                 <input type="hidden" name="email" value="{{ ban.email }}" />
-                <button type="submit" class="btn-small">Desbanir</button>
+                <button type="submit" class="btn-small btn-promote">
+                  Desbanir
+                </button>
               </form>
             </td>
           </tr>

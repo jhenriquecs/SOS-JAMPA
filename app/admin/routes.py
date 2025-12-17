@@ -240,6 +240,35 @@ def promote_user():
         
     return redirect(url_for('admin.dashboard'))
 
+@bp.route('/demote_user', methods=['POST'])
+def demote_user():
+    """
+    Rota para remover privilégios de administrador de um usuário.
+    - Verifica se o usuário atual é 'dev' (session['is_dev']).
+    - Atualiza o status 'is_admin' do usuário em users.json para False.
+    """
+    if not session.get('is_dev'):
+        flash('Apenas desenvolvedores podem remover administradores', 'error')
+        return redirect(url_for('admin.dashboard'))
+        
+    user_id = request.form.get('user_id')
+    users = read_json(current_app.config['USERS_JSON'])
+    
+    changed = False
+    for u in users:
+        if u['id'] == user_id:
+            u['is_admin'] = False
+            changed = True
+            break
+            
+    if changed:
+        write_json(current_app.config['USERS_JSON'], users)
+        flash('Privilégios de admin removidos', 'success')
+    else:
+        flash('Usuário não encontrado', 'error')
+        
+    return redirect(url_for('admin.dashboard'))
+
 @bp.route('/unban_user', methods=['POST'])
 def unban_user():
     """

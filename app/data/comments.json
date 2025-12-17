@@ -5,5 +5,12 @@
     "author_id": "ef4e0ba7-8455-49e3-b6b1-3211833ffbc3",
     "text": "teste comment",
     "created_at": "18:43:25 16/12/2025"
+  },
+  {
+    "id": "a79ac6fe-5432-427f-b959-b45a9cd82c7a",
+    "post_id": "570bcf6e-c937-4b60-98f3-74a564ae2fa4",
+    "author_id": "b8525371-d481-40e9-898d-3ee79e7702af",
+    "text": "sou foda",
+    "created_at": "02:00:09 17/12/2025"
   }
 ]

@@ -22,7 +22,7 @@
         <legend>Segurança</legend>
         <label for="senha">Senha: <span>*</span></label>
         <div class="password-wrapper">
-          <input type="password" id="senha" name="senha" placeholder="Digite sua senha" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$" required>
+          <input type="password" id="senha" name="senha" placeholder="Digite sua senha" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$" required>
           <button type="button" class="toggle-password" id="toggle-senha" title="Mostrar/ocultar senha"><i class="fas fa-eye"></i></button>
         </div>
         <ul id="requisitos">
@@ -30,11 +30,11 @@
           <li id="req-mai">Contém letra MAIÚSCULA</li>
           <li id="req-minu">Contém letra minúscula</li>
           <li id="req-num">Contém número</li>
-          <li id="req-esp">Contém caractere especial (@$!%*?&)</li>
+          <li id="req-esp">Contém caractere especial (@$!%*?&#)</li>
         </ul>
         <label for="confirmar_senha">Confirmar senha: <span>*</span></label>
         <div class="password-wrapper">
-          <input type="password" id="confirmar_senha" name="confirmar_senha" placeholder="Confirme sua senha" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$" required>
+          <input type="password" id="confirmar_senha" name="confirmar_senha" placeholder="Confirme sua senha" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$" required>
           <button type="button" class="toggle-password" id="toggle-confirmar" title="Mostrar/ocultar senha"><i class="fas fa-eye"></i></button>
         </div>
       </fieldset>

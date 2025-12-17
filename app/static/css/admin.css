@@ -204,3 +204,12 @@
 .admin-form button[type="submit"]:hover {
   background-color: var(--green-700);
 }
+
+.dev-badge {
+  background: #ff4444;
+  color: white;
+  padding: 2px 5px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: bold;
+}

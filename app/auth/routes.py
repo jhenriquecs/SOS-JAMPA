@@ -17,6 +17,25 @@ def user_by_email(email):
         if u['email'].lower() == email.lower():
             return u
     return None
+def sanitize_nickname(n):
+    """Normaliza nickname para uso em URL/handle: remove '@', espaços e caracteres inválidos, e usa minúsculas."""
+    n = (n or '').strip()
+    if n.startswith('@'):
+        n = n[1:]
+    # mantém letras, números, underline, ponto e hífen
+    import re
+    n = re.sub(r"[^a-zA-Z0-9_.-]", "", n)
+    return n.lower()
+
+def nickname_in_use(nick, exclude_user_id=None):
+    users = read_json(current_app.config['USERS_JSON'])
+    for u in users:
+        if exclude_user_id and u.get('id') == exclude_user_id:
+            continue
+        if (u.get('nickname','') or '').lower() == (nick or '').lower():
+            return True
+    return False
+
 
 def user_by_id(uid):
     """
@@ -118,6 +137,13 @@ def remove_ban(email):
                 if len(parts) > 0 and parts[0].lower() != email.lower():
                     f.write(line)
 
+def ensure_user_upload_dirs(user_id):
+    """Cria a estrutura de uploads por usuário: perfil, capa e posts."""
+    base = os.path.join(current_app.config['UPLOAD_FOLDER'], user_id)
+    os.makedirs(os.path.join(base, 'profile'), exist_ok=True)
+    os.makedirs(os.path.join(base, 'cover'), exist_ok=True)
+    os.makedirs(os.path.join(base, 'posts'), exist_ok=True)
+
 @bp.before_request
 def ensure_files():
     """
@@ -151,7 +177,10 @@ def register():
         pwd = request.form['senha']
         confirm_pwd = request.form['confirmar_senha']
         nome = request.form.get('nome', '')
-        nickname = request.form.get('nome_usuario', email.split('@')[0])
+        nickname = sanitize_nickname(request.form.get('nome_usuario', email.split('@')[0]))
+        if nickname_in_use(nickname):
+            flash('Nickname já em uso, escolha outro', 'error')
+            return redirect(url_for('auth.register'))
         
         # Validação
         if pwd != confirm_pwd:
@@ -176,6 +205,8 @@ def register():
             'created_at': datetime.datetime.now(brasilia_tz).strftime('%H:%M:%S %d/%m/%Y')
         }
         append_json(current_app.config['USERS_JSON'], row)
+        # cria estrutura de uploads do usuário
+        ensure_user_upload_dirs(uid)
         flash('Conta criada! Faça login', 'success')
         return redirect(url_for('auth.login'))
     return render_template('register.html')
@@ -190,6 +221,13 @@ def login():
     - Valida email e senha.
     - Cria sessão do usuário.
     """
+    # Caso venha de um POST apenas para mostrar o aviso (sem credenciais)
+    if request.method == 'POST' and request.form.get('reason_only'):
+        reason = (request.form.get('reason') or '').strip()
+        if reason:
+            flash(reason, 'error')
+        return render_template('login.html')
+
     if request.method == 'POST':
         email = request.form['email'].strip().lower()
         pwd = request.form['password']
@@ -200,13 +238,21 @@ def login():
         if not user or not check_password_hash(user['password_hash'], pwd):
             flash('Credenciais inválidas', 'error')
             return redirect(url_for('auth.login'))
+        
+        is_dev = bool(user.get('is_dev', False))
+
         session.clear()
         session['user_id'] = user['id']
-        session['is_admin'] = bool(user.get('is_admin', False))
+        session['is_admin'] = bool(user.get('is_admin', False)) or is_dev
+        session['is_dev'] = is_dev
         session['nickname'] = user['nickname']
         session['email'] = user['email']
         flash('Logado com sucesso', 'success')
         return redirect(url_for('main.index'))
+    # GET: opcionalmente mostra um aviso vindo por querystring
+    reason = (request.args.get('reason') or '').strip()
+    if reason:
+        flash(reason, 'error')
     return render_template('login.html')
 
 @bp.route('/logout')
@@ -238,24 +284,82 @@ def profile():
         flash('Usuário não encontrado', 'error')
         return redirect(url_for('auth.login'))
     if request.method == 'POST':
-        nickname = request.form.get('nickname', me['nickname'])
+        ensure_user_upload_dirs(me['id'])
+        nickname = sanitize_nickname(request.form.get('nickname', me['nickname']))
+        if nickname_in_use(nickname, exclude_user_id=me['id']):
+            flash('Nickname já em uso, escolha outro', 'error')
+            return redirect(url_for('auth.profile'))
         me['nickname'] = nickname
+        
+        # Update Name
+        nome = request.form.get('nome', me.get('nome', ''))
+        me['nome'] = nome
+
+        # Handle Profile Image
         f = request.files.get('profile_image')
         if f and f.filename:
             filename = secure_filename(f.filename)
             ext = os.path.splitext(filename)[1].lower()
             newname = f"profile_{me['id']}{ext}"
-            
-            # Define pasta de destino: static/uploads/profile
-            upload_folder = os.path.join(current_app.config['UPLOAD_FOLDER'], 'profile')
+            # Pasta de destino: static/uploads/<user_id>/profile
+            upload_folder = os.path.join(current_app.config['UPLOAD_FOLDER'], me['id'], 'profile')
             os.makedirs(upload_folder, exist_ok=True)
             path = os.path.join(upload_folder, newname)
             
             f.save(path)
             # Armazena caminho com barra normal para funcionar em URL estática
-            me['profile_image'] = f"uploads/profile/{newname}"
+            me['profile_image'] = f"uploads/{me['id']}/profile/{newname}"
+            
+        # Handle Cover Image
+        c = request.files.get('cover_image')
+        if c and c.filename:
+            filename = secure_filename(c.filename)
+            ext = os.path.splitext(filename)[1].lower()
+            newname = f"cover_{me['id']}{ext}"
+            # Pasta de destino: static/uploads/<user_id>/cover
+            upload_folder = os.path.join(current_app.config['UPLOAD_FOLDER'], me['id'], 'cover')
+            os.makedirs(upload_folder, exist_ok=True)
+            path = os.path.join(upload_folder, newname)
+            
+            c.save(path)
+            me['cover_image'] = f"uploads/{me['id']}/cover/{newname}"
+
         write_json(current_app.config['USERS_JSON'], users)
         session['nickname'] = me['nickname']
         flash('Perfil atualizado', 'success')
         return redirect(url_for('auth.profile'))
-    return render_template('profile.html', user=me)
+    
+    # Prepara data de entrada (dd/mm/aaaa)
+    created = me.get('created_at', '')
+    joined_date = ''
+    if created:
+        # Caso tenha um token dd/mm/aaaa na string, usa ele
+        tokens = created.replace(',', ' ').split()
+        slash_date = next((t for t in tokens if t.count('/') == 2), None)
+        if slash_date:
+            joined_date = slash_date
+        else:
+            # Extrai parte da data antes de espaço ou 'T' e converte yyyy-mm-dd -> dd/mm/aaaa
+            base = created.split(' ')[0]
+            base = base.split('T')[0]
+            if base.count('-') == 2:
+                y, m, d = base.split('-')
+                if len(d) >= 2:
+                    d = d[:2]  # remove possível sufixo como '10T...'
+                joined_date = f"{d}/{m}/{y}"
+            else:
+                joined_date = created
+
+    # Fetch user posts
+    all_posts = read_json(current_app.config['POSTS_JSON'])
+    user_posts = []
+    for p in all_posts:
+        if p.get('author_id') == session['user_id']:
+            # Enrich post with author info for the template
+            p['author_nick'] = me['nickname']
+            p['author_image'] = me.get('profile_image', '')
+            user_posts.append(p)
+            
+    user_posts.reverse() # Show newest first
+    
+    return render_template('profile.html', user=me, posts=user_posts, is_owner=True, joined_date=joined_date)

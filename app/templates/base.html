@@ -12,6 +12,11 @@
       src="https://kit.fontawesome.com/20da255e36.js"
       crossorigin="anonymous"
     ></script>
+    <script>
+      window.APP_ROUTES = {
+        login: "{{ url_for('auth.login') }}"
+      };
+    </script>
     <script
       src="{{ url_for('static', filename='js/main.js') }}?v=2"
       defer
@@ -23,15 +28,18 @@
       <nav class="nav">
         <a href="{{ url_for('main.index') }}">HOME</a>
         <a href="{{ url_for('main.waste_info') }}">Como descartar</a>
+        <a href="{{ url_for('main.news') }}">Notícias</a>
       </nav>
       <div class="nav-right">
         <div class="search">
-          <form action="{{ url_for('posts.list_posts') }}" method="get">
+          {% set is_news = request.endpoint == 'main.news' %}
+          <form action="{{ url_for('main.news') if is_news else url_for('posts.list_posts') }}" method="get">
             <input
               name="q"
               type="search"
-              placeholder="Buscar denúncias..."
+              placeholder="{{ 'Buscar notícias...' if is_news else 'Buscar denúncias...' }}"
               aria-label="Buscar"
+              value="{{ request.args.get('q','') }}"
             />
             <button type="submit" aria-label="Buscar">
               <i class="fa-solid fa-magnifying-glass"></i>
