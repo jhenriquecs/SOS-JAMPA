@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>SOS-JAMPA</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+    <script
+      src="https://kit.fontawesome.com/20da255e36.js"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="{{ url_for('static', filename='js/main.js') }}?v=2"
+      defer
+    ></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="brand"><i class="fa-solid fa-leaf"></i> SOS-JAMPA</div>
+      <nav class="nav">
+        <a href="{{ url_for('main.index') }}">HOME</a>
+        <a href="{{ url_for('main.waste_info') }}">Como descartar</a>
+      </nav>
+      <div class="nav-right">
+        <div class="search">
+          <form action="{{ url_for('posts.list_posts') }}" method="get">
+            <input
+              name="q"
+              type="search"
+              placeholder="Buscar denúncias..."
+              aria-label="Buscar"
+            />
+            <button type="submit" aria-label="Buscar">
+              <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+          </form>
+        </div>
+        {% if session.get('user_id') %} {% if session.get('is_admin') %}
+        <a class="btn btn-danger" href="{{ url_for('admin.dashboard') }}"
+          >Admin</a
+        >
+        {% endif %}
+        <a class="btn" href="{{ url_for('auth.profile') }}"
+          >{{ session.get('nickname') }}</a
+        >
+        <a class="btn" href="{{ url_for('auth.logout') }}">Sair</a>
+        {% else %}
+        <a class="btn" href="{{ url_for('auth.login') }}">Login</a>
+        <a class="btn" href="{{ url_for('auth.register') }}">Registrar</a>
+        {% endif %}
+      </div>
+    </header>
+
+    <main class="container">
+      {% with messages = get_flashed_messages(with_categories=true) %} {% if
+      messages %}
+      <ul class="flashes">
+        {% for cat,msg in messages %}
+        <li class="{{ cat }}">{{ msg }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %} {% endwith %} {% block content %}{% endblock %}
+      <div vw class="enabled">
+        <div vw-access-button class="active"></div>
+        <div vw-plugin-wrapper>
+          <div class="vw-plugin-top-wrapper"></div>
+        </div>
+      </div>
+      <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+      <script>
+        new window.VLibras.Widget("https://vlibras.gov.br/app");
+      </script>
+    </main>
+
+    <footer class="site-footer">© SOS-JAMPA - João Pessoa - PB</footer>
+  </body>
+</html>

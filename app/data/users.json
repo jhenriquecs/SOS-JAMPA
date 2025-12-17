@@ -1,0 +1,32 @@
+[
+  {
+    "id": "ef4e0ba7-8455-49e3-b6b1-3211833ffbc3",
+    "email": "jhenriques.costas@gmail.com",
+    "password_hash": "scrypt:32768:8:1$BHxaaSQpa7EtFjbA$398f490df46f6cd351005fda59d2e5cb0ef5aa1ae824caead799e048bfc45b0d09516f6792c4dd270246116146a4dc34e1e4e0e9e6b8d4bd09ffbac959543b7a",
+    "nickname": "Henrique",
+    "nome": "Henrique Costa",
+    "is_admin": true,
+    "profile_image": "uploads/profile_ef4e0ba7-8455-49e3-b6b1-3211833ffbc3.jpg",
+    "created_at": "2025-12-10T21:18:19.144947"
+  },
+  {
+    "id": "25efc3a9-b5de-4b1f-9b4f-7b9d51dcb41a",
+    "email": "jhenrique.costa@outlook.com",
+    "password_hash": "scrypt:32768:8:1$Xn5b0q4V3XbVJWYx$fdd7fc486c9264d3b0ce8aaa697306aaef4c57d23732033ab612f8d28e6f0a37d02475b1c53b4fb23b136971ff7f676fb511b9f8ce5d8f2164aafdcd558b698a",
+    "nickname": "jhenriquec",
+    "nome": "henrique costa",
+    "is_admin": false,
+    "profile_image": "",
+    "created_at": "2025-12-11T03:46:30.373307+00:00"
+  },
+  {
+    "id": "b8525371-d481-40e9-898d-3ee79e7702af",
+    "email": "huzumaki98@gmail.com",
+    "password_hash": "scrypt:32768:8:1$hjwSK1XkNKJIdgol$24dcbb102779279a043c51f722cfd14b7ff1d4572ee5f6a7dc27aa7be3ecfae5b5ce5f483c06cdf0fcc5ef792204af12923de51bcc67c0a475de6dcf20265557",
+    "nickname": "jhenriquec2",
+    "nome": "henrique costa",
+    "is_admin": false,
+    "profile_image": "",
+    "created_at": "2025-12-16T17:50:49.561354+00:00"
+  }
+]

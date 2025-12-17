@@ -1,0 +1,132 @@
+<div class="post-card" id="post-{{ p.id }}">
+  <div class="post-header">
+    <img
+      class="avatar"
+      src="{{ url_for('static', filename=p.author_image) if p.author_image else 'https://ui-avatars.com/api/?name=' + (p.author_nick|urlencode) + '&background=random' }}"
+      alt="avatar"
+    />
+    <div class="post-meta">
+      <div class="nick">{{ p.author_nick }}</div>
+      <div class="time">{{ p.created_at }}</div>
+    </div>
+    {% if session.get('user_id') == p.author_id or session.get('is_admin') %}
+    <div class="post-options">
+      <form
+        method="post"
+        action="{{ url_for('posts.delete_post', post_id=p.id) }}"
+        onsubmit="return confirm('Tem certeza que deseja excluir este post?');"
+      >
+        <button class="btn-icon danger" title="Apagar Post">&times;</button>
+      </form>
+    </div>
+    {% endif %}
+  </div>
+
+  <div class="post-body">
+    <p class="post-text">{{ p.description }}</p>
+    {% if p.address %}
+    <div class="geo-tag">
+      <i class="fas fa-map-marker-alt"></i> {{ p.address }}
+      <a
+        href="https://www.google.com/maps/search/?api=1&query={{ p.address | urlencode }}"
+        target="_blank"
+        title="Ver no mapa"
+      >
+        <i class="fas fa-external-link-alt"></i>
+      </a>
+    </div>
+    {% endif %}
+  </div>
+
+  {% if p.image_path %}
+  <div class="post-image-container">
+    <a href="{{ url_for('posts.view_post', post_id=p.id) }}">
+      <img
+        class="post-img"
+        src="{{ url_for('static', filename=p.image_path) }}"
+        alt="post image"
+      />
+    </a>
+  </div>
+  {% endif %}
+
+  <div class="post-footer">
+    <div class="post-stats">
+      <span class="likes-count">
+        <i class="fas fa-thumbs-up"></i>
+        <span id="likes-val-{{ p.id }}"
+          >{{ p.likes|length if p.likes else 0 }}</span
+        >
+      </span>
+      <span class="comments-count" onclick="toggleComments('{{ p.id }}')">
+        <span id="comments-val-{{ p.id }}"
+          >{{ p.comments_count if p.comments_count else 0 }}</span
+        >
+        comentários
+      </span>
+    </div>
+
+    <div class="post-actions">
+      <button
+        id="like-btn-{{ p.id }}"
+        class="action-btn like-btn {{ 'liked' if session.get('user_id') in (p.likes or []) else '' }}"
+        onclick="toggleLike('{{ p.id }}')"
+      >
+        <i class="far fa-thumbs-up"></i> Curtir
+      </button>
+      <button
+        class="action-btn comment-btn"
+        onclick="toggleComments('{{ p.id }}')"
+      >
+        <i class="far fa-comment-alt"></i> Comentar
+      </button>
+      <button
+        class="action-btn share-btn"
+        type="button"
+        onclick='sharePost("{{ url_for("posts.view_post", post_id=p.id, _external=True) }}")'
+      >
+        <i class="fas fa-share"></i> Compartilhar
+      </button>
+    </div>
+
+    <!-- Seção de Comentários -->
+    <div class="comments-section hidden" id="comments-section-{{ p.id }}">
+      <div class="comments-list" id="comments-list-{{ p.id }}">
+        <!-- Comentários carregados via JS -->
+      </div>
+
+      {% if session.get('user_id') %}
+      <div class="comment-input-area">
+        {% if current_user and current_user.profile_image %}
+        <img
+          src="{{ url_for('static', filename=current_user.profile_image.replace('\\', '/')) }}"
+          class="user-avatar-small"
+          alt="User"
+        />
+        {% else %}
+        <img
+          src="https://ui-avatars.com/api/?name={{ session.get('nickname', 'User') | urlencode }}&background=random"
+          class="user-avatar-small"
+          alt="User"
+        />
+        {% endif %}
+        <div class="input-wrapper">
+          <input
+            type="text"
+            id="comment-input-{{ p.id }}"
+            placeholder="Escreva um comentário..."
+            onkeypress="checkEnter(event, '{{ p.id }}')"
+          />
+          <button onclick="submitComment('{{ p.id }}')" title="Enviar">
+            <i class="fas fa-paper-plane"></i>
+          </button>
+        </div>
+      </div>
+      {% else %}
+      <div class="login-prompt">
+        <a href="{{ url_for('auth.login') }}">Faça login para comentar</a>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>

@@ -1,0 +1,22 @@
+{% extends 'base.html' %} {% block content %}
+<div class="posts-grid single-post-container">
+  {% with p=post %} {% include 'components/post_card.html' %} {% endwith %}
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const postId = "{{ post.id }}";
+    // Força a abertura da seção de comentários
+    const commentsSection = document.getElementById(
+      `comments-section-${postId}`
+    );
+    if (commentsSection) {
+      commentsSection.classList.remove("hidden");
+      // Carrega os comentários via AJAX para manter consistência com o feed
+      if (typeof loadComments === "function") {
+        loadComments(postId);
+      }
+    }
+  });
+</script>
+{% endblock %}

@@ -1,0 +1,94 @@
+{% extends 'base.html' %} {% block content %} {% if current_user %}
+<div class="create-post-card">
+  <form
+    action="{{ url_for('posts.create_post') }}"
+    method="post"
+    enctype="multipart/form-data"
+  >
+    <div class="cp-top">
+      {% if current_user.profile_image %}
+      <img
+        src="{{ url_for('static', filename=current_user.profile_image.replace('\\', '/')) }}"
+        alt="Avatar"
+        class="cp-avatar"
+      />
+      {% else %}
+      <div class="cp-avatar-placeholder">
+        <i class="fa-solid fa-user"></i>
+      </div>
+      {% endif %}
+      <textarea
+        name="description"
+        id="cp-desc"
+        placeholder="Qual a sua denúncia, {{ current_user.nickname }}?"
+        required
+      ></textarea>
+    </div>
+    <div class="cp-middle hidden-initially" id="cp-extras">
+      <!-- Inputs hidden by default, toggled by icons -->
+      <div class="cp-extra-inputs">
+        <input
+          name="address"
+          id="input-address"
+          placeholder="Endereço (Rua, Bairro...)"
+          class="cp-input hidden-input"
+        />
+        <input
+          name="tags"
+          id="input-tags"
+          placeholder="Tags (lixo; entulho...)"
+          class="cp-input hidden-input"
+        />
+      </div>
+
+      <!-- Tools Row -->
+      <div class="cp-tools">
+        <label class="cp-tool-btn" title="Adicionar Foto">
+          <i class="fa-solid fa-camera"></i>
+          <span>Foto</span>
+          <input
+            type="file"
+            name="image"
+            accept="image/*"
+            hidden
+            onchange="document.getElementById('file-name').textContent = this.files[0].name"
+          />
+        </label>
+
+        <div
+          class="cp-tool-btn"
+          onclick="toggleCpInput('input-address')"
+          title="Adicionar Localização"
+        >
+          <i class="fa-solid fa-location-dot"></i>
+          <span>Local</span>
+        </div>
+
+        <div
+          class="cp-tool-btn"
+          onclick="toggleCpInput('input-tags')"
+          title="Adicionar Tags"
+        >
+          <i class="fa-solid fa-tag"></i>
+          <span>Tags</span>
+        </div>
+      </div>
+
+      <div class="file-name-wrapper">
+        <span id="file-name" class="cp-file-name"></span>
+      </div>
+    </div>
+    <div class="cp-bottom hidden-initially" id="cp-actions">
+      <button type="submit" class="btn-primary-full">Publicar Denúncia</button>
+    </div>
+  </form>
+</div>
+
+{% endif %}
+<div class="posts-grid">
+  {% for p in posts or [] %} {% set p = p %} {# ensure var for include #} {%
+  include 'components/post_card.html' %} {% else %}
+  <p>Nenhuma denúncia encontrada.</p>
+  {% endfor %}
+</div>
+{% endblock %}

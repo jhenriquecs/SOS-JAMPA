@@ -1,0 +1,77 @@
+{% extends 'base.html' %} {% block content %}
+
+<div class="waste-header">
+  <h2>Como descartar resíduos</h2>
+  <p>
+    Encontre o local correto para descartar seus resíduos e ajude o meio
+    ambiente.
+  </p>
+</div>
+
+<div class="waste-controls">
+  <div class="control-group">
+    <label>
+      <i class="fas fa-bullseye"></i> Raio: <span id="radiusValue">5</span> km
+    </label>
+    <input
+      id="radiusInput"
+      type="range"
+      min="1"
+      max="50"
+      value="5"
+      oninput="document.getElementById('radiusValue').innerText = this.value"
+    />
+  </div>
+
+  <div class="control-group search-group">
+    <input
+      type="text"
+      id="addressInput"
+      placeholder="Digite seu endereço (Rua, Bairro)"
+    />
+    <button id="searchLocation" class="btn-primary">
+      <i class="fas fa-search"></i> Buscar
+    </button>
+  </div>
+
+  <div class="divider">ou</div>
+
+  <button id="useLocation" class="btn-secondary">
+    <i class="fas fa-map-marker-alt"></i> Usar GPS
+  </button>
+</div>
+
+<div id="wastes" class="waste-grid">
+  {% for w in wastes %}
+  <div class="waste-card" data-id="{{ w.id }}">
+    <div class="waste-icon-header" style="background-color: {{ w.color }}">
+      <i class="fas {{ w.icon }}"></i>
+    </div>
+    <div class="waste-card-content">
+      <h3>{{ w.title }}</h3>
+      <button type="button" class="btn-expand" data-target="details-{{ w.id }}">
+        Ver detalhes
+      </button>
+      <div id="details-{{ w.id }}" class="waste-details hidden">
+        <p>{{ w.desc }}</p>
+        <h4>Locais de coleta:</h4>
+        <ul class="locations">
+          {% for loc in w.locations %}
+          <li data-lat="{{ loc.lat }}" data-lon="{{ loc.lon }}">
+            {{ loc.address }}
+          </li>
+          {% else %}
+          <li>Nenhum local cadastrado.</li>
+          {% endfor %}
+        </ul>
+        <div class="nearest-info">
+          <i class="fas fa-info-circle"></i> Utilize a busca ou GPS para ver os
+          locais próximos.
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+{% endblock %}

@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Meu perfil</h2>
+<form method="post" enctype="multipart/form-data">
+  <label>Nickname <input name="nickname" value="{{ user.nickname }}"></label>
+  <label>Foto (max {{ config.MAX_PROFILE_MB }} MB) <input type="file" name="profile_image" accept="image/*"></label>
+  <button type="submit">Atualizar</button>
+</form>
+{% endblock %}

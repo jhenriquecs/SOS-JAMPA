@@ -1,0 +1,220 @@
+/* Waste Info Page Styles */
+
+.waste-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.waste-header h2 {
+  color: var(--green-800);
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.waste-controls {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  margin-bottom: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.control-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.search-group {
+  flex-grow: 1;
+  max-width: 400px;
+}
+
+.search-group input {
+  flex: 1;
+  padding: 10px 15px;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  outline: none;
+}
+
+.search-group input:focus {
+  border-color: var(--green-500);
+}
+
+.divider {
+  color: #888;
+  font-size: 0.9rem;
+}
+
+.waste-controls label {
+  font-weight: 600;
+  color: var(--green-700);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  white-space: nowrap;
+}
+
+.waste-controls input[type="range"] {
+  accent-color: var(--green-600);
+  cursor: pointer;
+  width: 100px;
+}
+
+.waste-controls button {
+  border: none;
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.btn-primary {
+  background-color: var(--green-600);
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: var(--green-700);
+}
+
+.btn-secondary {
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+.btn-secondary:hover {
+  background-color: #e0e0e0;
+}
+
+.waste-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+  align-items: start; /* Impede que os cards estiquem para preencher a altura da linha */
+}
+
+.waste-card {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s, box-shadow 0.2s;
+  display: flex;
+  flex-direction: column;
+}
+
+.waste-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.waste-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-bottom: 1px solid #eee;
+}
+
+.waste-card-content {
+  padding: 20px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.waste-card h3 {
+  margin: 0 0 10px 0;
+  color: var(--green-900);
+  font-size: 1.25rem;
+}
+
+.waste-card .btn-expand {
+  background: transparent;
+  border: 1px solid var(--green-600);
+  color: var(--green-600);
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  margin-top: auto;
+  align-self: flex-start;
+  transition: all 0.2s;
+}
+
+.waste-card .btn-expand:hover {
+  background: var(--green-50);
+}
+
+.waste-details {
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px solid #eee;
+  font-size: 0.95rem;
+  color: #555;
+  line-height: 1.5;
+}
+
+.waste-details ul {
+  list-style: none;
+  padding: 0;
+  margin: 10px 0;
+}
+
+.waste-details li {
+  background: #f5f5f5;
+  padding: 8px 12px;
+  border-radius: 6px;
+  margin-bottom: 6px;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+}
+
+/* Oculta locais com coordenadas por padrão (só exibe após busca) */
+.waste-details li[data-lat] {
+  display: none;
+}
+
+.waste-details li::before {
+  content: "📍";
+  margin-right: 8px;
+}
+
+.nearest-info {
+  margin-top: 10px;
+  font-weight: 600;
+  color: var(--green-700);
+  font-size: 0.9rem;
+}
+
+@media (max-width: 600px) {
+  .waste-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .waste-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.waste-icon-header {
+  width: 100%;
+  height: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 4rem;
+}

@@ -1,0 +1,25 @@
+[
+  {
+    "id": "6c890672-a886-401a-856c-ac233be019ef",
+    "author_id": "ef4e0ba7-8455-49e3-b6b1-3211833ffbc3",
+    "image_path": "",
+    "description": "teste",
+    "address": "",
+    "created_at": "17:14:21 16/12/2025",
+    "tags": "",
+    "likes": []
+  },
+  {
+    "id": "b20e15a7-e0d1-494e-98e5-35e3cbbe13a0",
+    "author_id": "ef4e0ba7-8455-49e3-b6b1-3211833ffbc3",
+    "image_path": "uploads/post/post_a08d5f12e1f84323b75fd669e1157d57_Imagem_do_WhatsApp_de_2025-11-05_as_20.08.08_3b6a5cea.jpg",
+    "description": "Teste de postagem lorem ipsum",
+    "address": "pinheiro do paraná, 34",
+    "created_at": "17:45:25 16/12/2025",
+    "tags": "teste",
+    "likes": [
+      "ef4e0ba7-8455-49e3-b6b1-3211833ffbc3"
+    ],
+    "comments_count": 1
+  }
+]

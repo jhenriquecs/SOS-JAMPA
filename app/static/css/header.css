@@ -1,0 +1,143 @@
+.site-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 20px;
+  background: linear-gradient(90deg, var(--green-700), var(--green-500));
+  color: white;
+}
+.brand {
+  font-weight: 700;
+  font-size: 20px;
+}
+.nav a {
+  color: white;
+  margin-right: 12px;
+  text-decoration: none;
+}
+.nav-right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.search {
+  position: relative;
+}
+
+.search form {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.search input {
+  padding: 8px 40px 8px 12px;
+  border-radius: 20px;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  width: 200px;
+  transition: width 0.3s ease;
+}
+
+.search input:focus {
+  width: 250px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.search button {
+  position: absolute;
+  right: 4px;
+  background: transparent;
+  border: none;
+  color: var(--green-700);
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease;
+}
+
+.search button:hover {
+  background: rgba(46, 139, 87, 0.1);
+}
+
+.search button i {
+  font-size: 16px;
+}
+
+@media (max-width: 768px) {
+  .site-header {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 12px;
+    gap: 12px;
+  }
+
+  .brand {
+    text-align: center;
+    margin-bottom: 4px;
+  }
+
+  .nav {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 8px;
+  }
+
+  .nav a {
+    margin: 0;
+    font-size: 15px;
+  }
+
+  .nav-right {
+    margin-left: 0;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+  }
+
+  .search {
+    width: 100%;
+    order: -1; /* Search bar on top of buttons in mobile */
+  }
+
+  .search form {
+    width: 100%;
+  }
+
+  .search input {
+    width: 100%;
+    font-size: 16px; /* Prevent zoom on iOS */
+  }
+
+  .search input:focus {
+    width: 100%;
+  }
+
+  /* Container for buttons to keep them side by side */
+  .nav-right > a {
+    width: 100%;
+    text-align: center;
+  }
+
+  /* If we want buttons side by side, we need a wrapper or different flex logic. 
+     Let's keep them stacked or wrap them. */
+  .nav-right {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .nav-right > a.btn {
+    flex: 1;
+    min-width: 100px;
+    text-align: center;
+  }
+}

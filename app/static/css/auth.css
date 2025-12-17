@@ -1,0 +1,262 @@
+/* Auth / Login Styles */
+.auth-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+  padding: 20px;
+}
+
+.auth-card {
+  background: #ffffff;
+  padding: 30px;
+  width: 100%;
+  max-width: 400px;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.auth-card h2 {
+  color: var(--green-900);
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.auth-card label {
+  font-size: 14px;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 6px;
+  color: var(--green-900);
+}
+
+.auth-card input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  border: 1px solid var(--green-500);
+  transition: all 0.2s ease;
+}
+
+.auth-card input:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--green-300);
+}
+
+.auth-card button {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  background: var(--green-700);
+  color: #ffffff;
+  font-weight: bold;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.auth-card button:hover {
+  background: var(--green-900);
+}
+
+.auth-footer {
+  margin-top: 15px;
+  text-align: center;
+  font-size: 14px;
+}
+
+/* Cadastro/Registro */
+.container > .card {
+  background: #ffffff;
+  padding: 30px;
+  max-width: 600px;
+  margin: 0 auto;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.container > .card h2 {
+  color: var(--green-900);
+  text-align: center;
+  margin-bottom: 24px;
+  font-size: 24px;
+}
+
+.container > .card form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+fieldset {
+  border: 2px solid var(--green-500);
+  border-radius: 8px;
+  padding: 20px;
+  margin: 0;
+  background: #fafafa;
+}
+
+fieldset:focus-within {
+  border-color: var(--green-700);
+  background: #f5fff5;
+}
+
+legend {
+  font-weight: bold;
+  color: var(--green-900);
+  padding: 0 12px;
+  font-size: 16px;
+}
+
+.container > .card label {
+  font-size: 14px;
+  font-weight: 600;
+  display: block;
+  margin-bottom: 6px;
+  color: var(--green-900);
+}
+
+.container > .card input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  border: 1px solid var(--green-500);
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.container > .card input:focus {
+  outline: none;
+  border-color: var(--green-700);
+  box-shadow: 0 0 0 3px rgba(46, 139, 87, 0.1);
+  background: #fafffe;
+}
+
+.password-wrapper {
+  position: relative;
+  margin-bottom: 15px;
+}
+
+.password-wrapper input {
+  padding-right: 45px;
+  margin-bottom: 0;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  padding: 6px;
+  transition: all 0.2s ease;
+  color: var(--green-700);
+}
+
+.toggle-password:hover {
+  transform: translateY(-50%) scale(1.2);
+  color: var(--green-900);
+}
+
+.toggle-password:active {
+  transform: translateY(-50%) scale(0.95);
+}
+
+#requisitos {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 20px 0;
+  background: #f9f9f9;
+  padding: 12px;
+  border-radius: 6px;
+  border-left: 4px solid #ff6b6b;
+}
+
+#requisitos li {
+  color: #d63031;
+  margin: 8px 0;
+  font-size: 13px;
+  transition: all 0.2s ease;
+  margin-left: 0;
+  display: flex;
+  align-items: center;
+}
+
+#requisitos li::before {
+  content: "✗";
+  margin-right: 8px;
+  font-weight: bold;
+}
+
+#requisitos li.ok {
+  color: #27ae60;
+  font-weight: 600;
+  border-left: 2px solid #27ae60;
+  padding-left: 8px;
+  margin-left: -8px;
+}
+
+#requisitos li.ok::before {
+  content: "✓";
+  margin-right: 8px;
+}
+
+span {
+  color: #e74c3c;
+  font-weight: bold;
+}
+
+.container > .card button[type="submit"] {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  background: var(--green-700);
+  color: #ffffff;
+  font-weight: bold;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-top: 10px;
+}
+
+.container > .card button[type="submit"]:hover {
+  background: var(--green-900);
+  box-shadow: 0 4px 12px rgba(11, 61, 11, 0.2);
+  transform: translateY(-2px);
+}
+
+.container > .card button[type="submit"]:active {
+  transform: translateY(0);
+}
+
+@media (max-width: 600px) {
+  .container > .card {
+    padding: 20px;
+  }
+
+  fieldset {
+    padding: 15px;
+  }
+
+  .container > .card button[type="submit"] {
+    padding: 12px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .auth-container {
+    padding: 10px;
+  }
+  .auth-card {
+    padding: 20px;
+  }
+}

@@ -1,0 +1,43 @@
+{% extends 'base.html' %}{% block content %}
+<div class="container">
+  <div class="card">
+    <h2>Cadastrar</h2>
+    <form action="{{ url_for('auth.register') }}" method="post">
+      <!--Agrupa informações pessoais-->
+      <fieldset>
+        <legend>Informações Pessoais</legend>
+            <label for="nome">Nome Completo: <span>*</span></label>
+            <input type="text" id="nome" name="nome" placeholder="Digite seu nome Completo" required>
+            <label for="nome_usuario">Nome de Usuário: <span>*</span></label>
+            <input type="text" name="nome_usuario" id="nome_usuario" placeholder="Digite seu nome de usuário" required>
+            <label for="email">E-mail: <span>*</span></label>
+            <input type="email" id="email" name="email" placeholder="email@exemplo.com" required>
+            <label for="data_nascimento">Data de Nascimento: <span>*</span></label>
+            <input type="date" id="data_nascimento" name="data_nascimento" placeholder="dd/mm/yyyy" required>
+            <label for="telefone">Telefone:</label>
+            <input type="tel" id="telefone" name="telefone" placeholder="(99) 99999-9999" pattern="\(\d{2}\)\s\d{5}-\d{4}">
+      </fieldset>
+      <fieldset>
+        <!--Agrupa senha e requisitos-->
+        <legend>Segurança</legend>
+        <label for="senha">Senha: <span>*</span></label>
+        <div class="password-wrapper">
+          <input type="password" id="senha" name="senha" placeholder="Digite sua senha" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$" required>
+          <button type="button" class="toggle-password" id="toggle-senha" title="Mostrar/ocultar senha"><i class="fas fa-eye"></i></button>
+        </div>
+        <ul id="requisitos">
+          <li id="req-min">Mínimo 8 caracteres</li>
+          <li id="req-mai">Contém letra MAIÚSCULA</li>
+          <li id="req-minu">Contém letra minúscula</li>
+          <li id="req-num">Contém número</li>
+          <li id="req-esp">Contém caractere especial (@$!%*?&)</li>
+        </ul>
+        <label for="confirmar_senha">Confirmar senha: <span>*</span></label>
+        <div class="password-wrapper">
+          <input type="password" id="confirmar_senha" name="confirmar_senha" placeholder="Confirme sua senha" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$" required>
+          <button type="button" class="toggle-password" id="toggle-confirmar" title="Mostrar/ocultar senha"><i class="fas fa-eye"></i></button>
+        </div>
+      </fieldset>
+      <button type="submit">Cadastrar</button>
+    </form>
+{% endblock %}

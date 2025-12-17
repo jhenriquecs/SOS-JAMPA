@@ -1,0 +1,275 @@
+{% extends 'base.html' %} {% block content %}
+<h2>Painel Administrativo</h2>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="openTab(event, 'users')">
+    Gerenciar Usuários
+  </button>
+  <button class="tab-btn" onclick="openTab(event, 'banned')">
+    Usuários Banidos
+  </button>
+  <button class="tab-btn" onclick="openTab(event, 'collection')">
+    Pontos de Coleta
+  </button>
+</div>
+
+<div id="collection" class="tab-content">
+  <div class="card admin-card">
+    <h3>Gerenciar Pontos de Coleta</h3>
+
+    <form
+      action="{{ url_for('admin.add_collection_point') }}"
+      method="post"
+      class="admin-form"
+    >
+      <div class="form-group">
+        <label>Nome do Local</label>
+        <input
+          type="text"
+          name="name"
+          required
+          placeholder="Ex: Ecoponto Manaíra"
+        />
+      </div>
+      <div class="form-group">
+        <label>Tipo de Resíduo</label>
+        <select name="type" required>
+          <option value="pilhas">Pilhas e Baterias</option>
+          <option value="oleo">Óleo de Cozinha</option>
+          <option value="eletronico">Lixo Eletrônico</option>
+          <option value="plastico">Plástico</option>
+          <option value="vidro">Vidro</option>
+          <option value="papel">Papel</option>
+          <option value="metal">Metal</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Rua/Avenida</label>
+          <input
+            type="text"
+            name="street"
+            required
+            placeholder="Av. Epitácio Pessoa"
+          />
+        </div>
+        <div class="form-group">
+          <label>Número</label>
+          <input type="text" name="number" required placeholder="1234" />
+        </div>
+        <div class="form-group">
+          <label>Bairro</label>
+          <input
+            type="text"
+            name="neighborhood"
+            required
+            placeholder="Miramar"
+          />
+        </div>
+      </div>
+      <button type="submit" class="btn primary">Adicionar Ponto</button>
+    </form>
+
+    <div class="table-responsive">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Tipo</th>
+            <th>Endereço</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for point in collection_points %}
+          <tr>
+            <td>{{ point.name }}</td>
+            <td>
+              <span class="tag-badge">{{ point.type }}</span>
+            </td>
+            <td>{{ point.address }}</td>
+            <td>
+              <form
+                action="{{ url_for('admin.delete_collection_point') }}"
+                method="post"
+                onsubmit="return confirm('Excluir este ponto?');"
+              >
+                <input type="hidden" name="point_id" value="{{ point.id }}" />
+                <button type="submit" class="btn-small btn-danger">
+                  Excluir
+                </button>
+              </form>
+            </td>
+          </tr>
+          {% else %}
+          <tr>
+            <td colspan="4" class="text-center">
+              Nenhum ponto de coleta cadastrado.
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div id="users" class="tab-content active">
+  <div class="card admin-card">
+    <h3>Usuários Ativos</h3>
+    <div class="table-responsive">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Nome / Nickname</th>
+            <th>Email</th>
+            <th>Tags Atuais</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for user in users %}
+          <tr>
+            <td>
+              {{ user.nome }} <br />
+              <small>@{{ user.nickname }}</small>
+              {% if user.is_admin %}
+              <span class="admin-badge">ADMIN</span>
+              {% endif %}
+            </td>
+            <td>{{ user.email }}</td>
+            <td>
+              {% for tag in user_tags.get(user.id, []) %}
+              <span class="tag-badge">
+                {{ tag.tag }}
+                <form
+                  action="{{ url_for('admin.remove_tag') }}"
+                  method="post"
+                  class="inline-form"
+                >
+                  <input type="hidden" name="user_id" value="{{ user.id }}" />
+                  <input type="hidden" name="tag" value="{{ tag.tag }}" />
+                  <button type="submit" class="tag-remove-btn">&times;</button>
+                </form>
+              </span>
+              {% endfor %}
+            </td>
+            <td>
+              <div class="actions-column">
+                <form
+                  action="{{ url_for('admin.give_tag') }}"
+                  method="post"
+                  class="add-tag-form"
+                >
+                  <input type="hidden" name="user_id" value="{{ user.id }}" />
+                  <input
+                    type="text"
+                    name="tag"
+                    placeholder="Nova Tag"
+                    class="add-tag-input"
+                    required
+                  />
+                  <button type="submit" class="btn-small">Add</button>
+                </form>
+
+                <div class="actions-row">
+                  {% if not user.is_admin %}
+                  <form
+                    action="{{ url_for('admin.promote_user') }}"
+                    method="post"
+                    onsubmit="return confirm('Tem certeza que deseja promover este usuário a ADMIN?');"
+                  >
+                    <input type="hidden" name="user_id" value="{{ user.id }}" />
+                    <button type="submit" class="btn-small btn-promote">
+                      Promover
+                    </button>
+                  </form>
+
+                  <button
+                    class="btn-small btn-danger"
+                    onclick="showBanModal('{{ user.email }}')"
+                  >
+                    Banir
+                  </button>
+                  {% else %}
+                  <span class="admin-label">(Admin)</span>
+                  {% endif %}
+                </div>
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div id="banned" class="tab-content">
+  <div class="card admin-card">
+    <h3>Lista de Banidos</h3>
+    <div class="table-responsive">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Email</th>
+            <th>Motivo</th>
+            <th>Data</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for ban in banned_users %}
+          <tr>
+            <td>{{ ban.email }}</td>
+            <td>{{ ban.reason }}</td>
+            <td>{{ ban.at }}</td>
+            <td>
+              <form
+                action="{{ url_for('admin.unban_user') }}"
+                method="post"
+                onsubmit="return confirm('Tem certeza que deseja desbanir este usuário?');"
+              >
+                <input type="hidden" name="email" value="{{ ban.email }}" />
+                <button type="submit" class="btn-small">Desbanir</button>
+              </form>
+            </td>
+          </tr>
+          {% else %}
+          <tr>
+            <td colspan="4" class="text-center">Nenhum usuário banido.</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de Banimento -->
+<div id="banModal" class="modal-overlay">
+  <div class="card modal-card">
+    <h3>Banir Usuário</h3>
+    <form action="{{ url_for('admin.ban_user') }}" method="post">
+      <input type="hidden" id="banEmail" name="email" />
+      <label
+        >Motivo:
+        <input
+          type="text"
+          name="reason"
+          required
+          placeholder="Ex: Spam, Comportamento inadequado"
+      /></label>
+      <div class="modal-actions">
+        <button type="submit" class="btn-danger">Confirmar Ban</button>
+        <button type="button" onclick="closeBanModal()" class="btn-cancel">
+          Cancelar
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/admin.js') }}"></script>
+
+{% endblock %}
